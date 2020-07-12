@@ -1,0 +1,33 @@
+version: '3'
+services:
+  ng-sso-api:
+    container_name: ng-sso-api
+    image: maven:3.6.3-amazoncorretto-8
+    volumes:
+      - ..:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - 8080:8080
+    environment:
+      - TZ=Asia/Tokyo
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    command: tail -f /dev/null
+    restart: 'no'
+  ng-sso-mysql:
+    container_name: ng-sso-mysql
+    image: mysql:5.7.12
+    volumes:
+      - ./mysql/docker.cnf:/etc/mysql/conf.d/docker.cnf
+      # - ./mysql/data:/var/lib/mysql
+    working_dir: /usr/src/app
+    ports:
+      - 3306:3306
+    environment:
+      - TZ=Asia/Tokyo
+      - MYSQL_DATABASE=platform
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+    restart: 'no'
